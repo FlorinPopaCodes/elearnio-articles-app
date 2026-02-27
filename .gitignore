@@ -1,0 +1,36 @@
+# macOS
+.DS_Store
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+
+# Rails (will apply once generated)
+/log/*
+/tmp/*
+/storage/*
+!/log/.keep
+!/tmp/.keep
+!/storage/.keep
+/db/*.sqlite3
+/db/*.sqlite3-*
+/public/assets
+/public/packs
+/node_modules
+/vendor/bundle
+.byebug_history
+master.key
+
+# Angular (will apply once generated)
+/frontend/dist/
+/frontend/node_modules/
+/frontend/.angular/
+
+# Coverage
+/coverage/
