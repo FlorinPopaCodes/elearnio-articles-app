@@ -154,3 +154,31 @@ export class MyComponent {
   // ...
 }
 ```
+
+## Design Context
+
+### Users
+Technical reviewers at Elearnio evaluating engineering quality. They'll spend 5-15 minutes clicking through the app, inspecting code, and judging taste. The UI should demonstrate product-level polish without over-engineering.
+
+### Brand Personality
+**Professional, clean, considered.** The app should feel like a well-crafted internal tool — not flashy, not boring. Think Linear meets Notion: structured, quiet confidence, clear hierarchy.
+
+### Aesthetic Direction
+- **Palette**: Teal/Emerald primary — fresh, growth-oriented, fitting for an e-learning context
+  - Primary: `teal-600` / `teal-500` (buttons, links, active states)
+  - Accent: `emerald-50` / `emerald-100` (highlights, stat cards)
+  - Neutrals: `gray-50` through `gray-900` (backgrounds, text, borders)
+  - Error: `red-500` / `red-600`
+- **Theme**: Light mode only
+- **Typography**: System font stack via Tailwind defaults, `@tailwindcss/typography` for markdown
+- **Spacing**: Tailwind default scale, prefer `p-4`/`p-6` for cards, `space-y-3`/`space-y-4` for lists
+- **Borders**: Subtle `border-gray-200`, rounded corners (`rounded-lg` for cards, `rounded-md` for inputs/buttons)
+- **Shadows**: Minimal — `hover:shadow-md` on interactive cards only
+- **Anti-references**: No dark themes, no gradients, no glassmorphism, no excessive animations
+
+### Design Principles
+1. **Content first** — UI should disappear; text, stats, and interactions are the focus
+2. **Quiet confidence** — Polish through spacing, alignment, and typography, not decoration
+3. **Obvious hierarchy** — Clear visual weight: headings > body > meta. No ambiguity about what to read first
+4. **Consistent patterns** — Same card style, same form style, same button style everywhere. No one-offs
+5. **Restrained interaction** — Hover states and transitions only where they aid comprehension

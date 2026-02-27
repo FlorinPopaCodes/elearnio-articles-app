@@ -1,24 +1,27 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, switchMap } from 'rxjs';
 import { ArticleService } from '../../services/article.service';
+import { EngagementService } from '../../services/engagement.service';
 import { ArticleCardComponent } from '../../components/article-card/article-card.component';
 import { ArticleFormComponent } from '../../components/article-form/article-form.component';
 
 @Component({
   selector: 'app-article-list-page',
-  imports: [ArticleCardComponent, ArticleFormComponent],
+  imports: [ArticleCardComponent, ArticleFormComponent, RouterLink],
   templateUrl: './article-list.page.html',
   host: { class: 'block' },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArticleListPage {
   private svc = inject(ArticleService);
+  private engagementSvc = inject(EngagementService);
+  engagementStats = toSignal(this.engagementSvc.getStats());
   private refresh$ = new BehaviorSubject<void>(undefined);
 
   articles = toSignal(
     this.refresh$.pipe(switchMap(() => this.svc.getArticles())),
-    { initialValue: [] },
   );
 
   showForm = signal(false);
