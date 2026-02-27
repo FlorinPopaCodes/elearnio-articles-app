@@ -1,0 +1,42 @@
+<div class="mx-auto max-w-3xl">
+  <a routerLink="/articles" class="mb-4 inline-flex items-center text-sm text-indigo-600 hover:text-indigo-500">
+    &larr; Back to articles
+  </a>
+
+  @if (article(); as article) {
+    <article class="rounded-lg border border-gray-200 bg-white p-6">
+      <h1 class="text-3xl font-bold text-gray-900">{{ article.title }}</h1>
+      <div class="mt-2 flex items-center gap-3 text-sm text-gray-500">
+        <span>{{ article.author_name }}</span>
+        <span>&middot;</span>
+        <time>{{ article.created_at | date:'mediumDate' }}</time>
+        <span>&middot;</span>
+        <span>{{ article.comments_count }} {{ article.comments_count === 1 ? 'comment' : 'comments' }}</span>
+      </div>
+      <div class="prose mt-6 max-w-none" [innerHTML]="article.body | markdown"></div>
+    </article>
+
+    @defer (on viewport) {
+      <section class="mt-8">
+        <h2 class="mb-4 text-xl font-semibold text-gray-900">Comments</h2>
+
+        <div class="mb-6">
+          <app-comment-form
+            [serverErrors]="commentErrors()"
+            [submitting]="commentSubmitting()"
+            (submitted)="onCommentSubmit($event)" />
+        </div>
+
+        <app-comment-list [comments]="comments()" />
+      </section>
+    } @placeholder {
+      <div class="mt-8 h-32 animate-pulse rounded-lg bg-gray-100"></div>
+    } @loading {
+      <div class="mt-8 text-center text-gray-400">Loading comments...</div>
+    }
+  } @else {
+    <div class="flex items-center justify-center py-12">
+      <div class="h-8 w-8 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent"></div>
+    </div>
+  }
+</div>

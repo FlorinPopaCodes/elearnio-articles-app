@@ -1,5 +1,6 @@
 class EngagementSerializer
   include Alba::Resource
+  include Typelizer::DSL
 
   attributes :total_articles, :total_comments
 

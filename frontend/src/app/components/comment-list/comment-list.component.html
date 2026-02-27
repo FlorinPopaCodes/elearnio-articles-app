@@ -1,0 +1,16 @@
+@if (comments().length === 0) {
+  <p class="text-sm text-gray-500 italic">No comments yet.</p>
+} @else {
+  <ul class="space-y-4">
+    @for (comment of comments(); track comment.id) {
+      <li class="rounded-lg border border-gray-100 bg-gray-50 p-3">
+        <p class="text-sm text-gray-800">{{ comment.body }}</p>
+        <div class="mt-2 flex items-center gap-2 text-xs text-gray-500">
+          <span class="font-medium">{{ comment.author_name }}</span>
+          <span>&middot;</span>
+          <time>{{ comment.created_at | date:'medium' }}</time>
+        </div>
+      </li>
+    }
+  </ul>
+}
