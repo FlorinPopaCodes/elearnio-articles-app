@@ -7,7 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { toSignal, toObservable } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, of, switchMap } from 'rxjs';
+import { combineLatest, of, switchMap } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { ArticleService } from '../../services/article.service';
 import { EngagementService } from '../../services/engagement.service';
@@ -46,17 +46,16 @@ export class ArticleDetailPage {
     ),
   );
 
-  private commentsRefresh$ = new BehaviorSubject<void>(undefined);
+  private commentsRefreshTrigger = signal(0);
   private newComments = signal<Comment[]>([]);
 
   loadedComments = toSignal(
-    toObservable(this.articleId).pipe(
-      switchMap((id) =>
-        id
-          ? this.commentsRefresh$.pipe(
-              switchMap(() => this.svc.getComments(id)),
-            )
-          : of([] as Comment[]),
+    combineLatest([
+      toObservable(this.articleId),
+      toObservable(this.commentsRefreshTrigger),
+    ]).pipe(
+      switchMap(([id]) =>
+        id ? this.svc.getComments(id) : of([] as Comment[]),
       ),
     ),
     { initialValue: [] as Comment[] },

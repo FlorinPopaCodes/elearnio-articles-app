@@ -42,6 +42,8 @@ describe('EngagementService', () => {
       expect(stats).toEqual(mockStats);
     });
 
+    TestBed.flushEffects();
+
     const req = httpMock.expectOne('/api/engagement');
     expect(req.request.method).toBe('GET');
     req.flush(mockStats);

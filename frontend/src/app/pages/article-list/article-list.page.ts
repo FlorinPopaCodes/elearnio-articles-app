@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, switchMap } from 'rxjs';
+import { toSignal, toObservable } from '@angular/core/rxjs-interop';
+import { switchMap } from 'rxjs';
 import { ArticleService } from '../../services/article.service';
 import { EngagementService } from '../../services/engagement.service';
 import { ArticleCardComponent } from '../../components/article-card/article-card.component';
@@ -18,10 +18,12 @@ export class ArticleListPage {
   private svc = inject(ArticleService);
   private engagementSvc = inject(EngagementService);
   engagementStats = toSignal(this.engagementSvc.getStats());
-  private refresh$ = new BehaviorSubject<void>(undefined);
+  private refreshTrigger = signal(0);
 
   articles = toSignal(
-    this.refresh$.pipe(switchMap(() => this.svc.getArticles())),
+    toObservable(this.refreshTrigger).pipe(
+      switchMap(() => this.svc.getArticles()),
+    ),
   );
 
   showForm = signal(false);
@@ -43,7 +45,7 @@ export class ArticleListPage {
       next: () => {
         this.showForm.set(false);
         this.submitting.set(false);
-        this.refresh$.next();
+        this.refreshTrigger.update((v) => v + 1);
         this.engagementSvc.refresh();
       },
       error: (err) => {

@@ -9,7 +9,7 @@
       <div class="mt-2 flex items-center gap-3 text-sm text-gray-500">
         <span>{{ article.author_name }}</span>
         <span>&middot;</span>
-        <time>{{ article.created_at | date:'mediumDate' }}</time>
+        <time [attr.datetime]="article.created_at">{{ article.created_at | date:'mediumDate' }}</time>
         <span>&middot;</span>
         <span>{{ article.comments_count }} {{ article.comments_count === 1 ? 'comment' : 'comments' }}</span>
       </div>
@@ -31,13 +31,14 @@
         <app-comment-list [comments]="comments()" />
       </section>
     } @placeholder {
-      <div class="mt-8 h-32 animate-pulse rounded-lg bg-gray-100"></div>
+      <div class="mt-8 h-32 animate-pulse rounded-lg bg-gray-100" aria-hidden="true"></div>
     } @loading {
       <div class="mt-8 text-center text-gray-400">Loading comments...</div>
     }
   } @else {
-    <div class="flex items-center justify-center py-12">
-      <div class="h-8 w-8 animate-spin rounded-full border-4 border-teal-600 border-t-transparent"></div>
+    <div class="flex items-center justify-center py-12" role="status" aria-label="Loading article">
+      <div class="h-8 w-8 animate-spin rounded-full border-4 border-teal-600 border-t-transparent" aria-hidden="true"></div>
+      <span class="sr-only">Loading article...</span>
     </div>
   }
 </div>

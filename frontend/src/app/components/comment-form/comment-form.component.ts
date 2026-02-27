@@ -2,11 +2,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  inject,
   input,
   output,
 } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { inject } from '@angular/core';
 import { applyServerErrors } from '../../services/server-errors';
 
 @Component({
@@ -28,14 +28,12 @@ export class CommentFormComponent {
     author_name: ['', Validators.required],
   });
 
-  constructor() {
-    effect(() => {
-      const errors = this.serverErrors();
-      if (errors) {
-        applyServerErrors(this.form, errors);
-      }
-    });
-  }
+  private _applyErrors = effect(() => {
+    const errors = this.serverErrors();
+    if (errors) {
+      applyServerErrors(this.form, errors);
+    }
+  });
 
   onSubmit(): void {
     if (this.form.invalid) {

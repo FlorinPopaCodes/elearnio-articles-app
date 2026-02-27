@@ -2,12 +2,12 @@
   <div class="mb-6 flex items-center justify-between">
     <h1 class="text-2xl font-bold text-gray-900">Articles</h1>
     @if (showForm()) {
-      <button (click)="toggleForm()"
+      <button type="button" (click)="toggleForm()"
               class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50">
         Cancel
       </button>
     } @else {
-      <button (click)="toggleForm()"
+      <button type="button" (click)="toggleForm()"
               class="rounded-md bg-teal-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500">
         New article
       </button>
@@ -58,7 +58,7 @@
       </div>
     }
   } @placeholder {
-    <div class="mb-6 h-20 animate-pulse rounded-lg bg-gray-100"></div>
+    <div class="mb-6 h-20 animate-pulse rounded-lg bg-gray-100" aria-hidden="true"></div>
   }
 
   @if (articles(); as articles) {
@@ -67,10 +67,10 @@
         <app-article-card [article]="article" />
       } @empty {
         <div class="rounded-lg border-2 border-dashed border-gray-300 px-6 py-12 text-center">
-          <div class="text-4xl">&#9997;&#65039;</div>
+          <div class="text-4xl" aria-hidden="true">&#9997;&#65039;</div>
           <h3 class="mt-3 text-sm font-semibold text-gray-900">No articles yet</h3>
           <p class="mt-1 text-sm text-gray-500">Get the conversation started.</p>
-          <button (click)="toggleForm()"
+          <button type="button" (click)="toggleForm()"
                   class="mt-4 rounded-md bg-teal-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500">
             Write the first article
           </button>
@@ -78,10 +78,11 @@
       }
     </div>
   } @else {
-    <div class="space-y-3">
-      <div class="h-20 animate-pulse rounded-lg bg-gray-100"></div>
-      <div class="h-20 animate-pulse rounded-lg bg-gray-100"></div>
-      <div class="h-20 animate-pulse rounded-lg bg-gray-100"></div>
+    <div class="space-y-3" role="status" aria-label="Loading articles">
+      <div class="h-20 animate-pulse rounded-lg bg-gray-100" aria-hidden="true"></div>
+      <div class="h-20 animate-pulse rounded-lg bg-gray-100" aria-hidden="true"></div>
+      <div class="h-20 animate-pulse rounded-lg bg-gray-100" aria-hidden="true"></div>
+      <span class="sr-only">Loading articles...</span>
     </div>
   }
 </div>

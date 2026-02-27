@@ -1,14 +1,15 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, shareReplay, switchMap } from 'rxjs';
+import { inject, Injectable, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { shareReplay, switchMap } from 'rxjs';
 import type { Observable } from 'rxjs';
 import type { Engagement } from '../types';
 
 @Injectable({ providedIn: 'root' })
 export class EngagementService {
   private http = inject(HttpClient);
-  private refresh$ = new BehaviorSubject<void>(undefined);
-  private stats$ = this.refresh$.pipe(
+  private refreshTrigger = signal(0);
+  private stats$ = toObservable(this.refreshTrigger).pipe(
     switchMap(() => this.http.get<Engagement>('/api/engagement')),
     shareReplay(1),
   );
@@ -18,6 +19,6 @@ export class EngagementService {
   }
 
   refresh(): void {
-    this.refresh$.next();
+    this.refreshTrigger.update((v) => v + 1);
   }
 }
