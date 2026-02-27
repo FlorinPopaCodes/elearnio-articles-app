@@ -70,16 +70,23 @@ articles_data = [
   }
 ]
 
-articles_data.each do |article_data|
+base_time = Time.zone.parse("2026-02-10 09:15:00")
+
+articles_data.each_with_index do |article_data, i|
   comments = article_data.delete(:comments)
+  article_time = base_time + i.days + (i * 3).hours + (i * 17).minutes
+
   article = Article.find_or_create_by!(title: article_data[:title]) do |a|
     a.assign_attributes(article_data)
   end
+  article.update_columns(created_at: article_time, updated_at: article_time)
 
-  comments.each do |comment_data|
-    article.comments.find_or_create_by!(body: comment_data[:body]) do |c|
+  comments.each_with_index do |comment_data, j|
+    comment_time = article_time + (j + 1).hours + (j * 23).minutes
+    comment = article.comments.find_or_create_by!(body: comment_data[:body]) do |c|
       c.assign_attributes(comment_data)
     end
+    comment.update_columns(created_at: comment_time, updated_at: comment_time)
   end
 end
 
