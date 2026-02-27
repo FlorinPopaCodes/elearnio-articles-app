@@ -10,6 +10,7 @@ import { toSignal, toObservable } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, of, switchMap } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { ArticleService } from '../../services/article.service';
+import { EngagementService } from '../../services/engagement.service';
 import { CommentListComponent } from '../../components/comment-list/comment-list.component';
 import { CommentFormComponent } from '../../components/comment-form/comment-form.component';
 import { MarkdownPipe } from '../../pipes/markdown.pipe';
@@ -33,6 +34,7 @@ export class ArticleDetailPage {
   id = input.required<string>();
 
   private svc = inject(ArticleService);
+  private engagementSvc = inject(EngagementService);
   private articleId = computed(() => {
     const n = Number(this.id());
     return Number.isFinite(n) && n > 0 ? n : null;
@@ -78,6 +80,7 @@ export class ArticleDetailPage {
       next: (saved) => {
         this.newComments.update((c) => [saved, ...c]);
         this.commentSubmitting.set(false);
+        this.engagementSvc.refresh();
       },
       error: (err) => {
         this.commentErrors.set(err.error?.errors ?? null);

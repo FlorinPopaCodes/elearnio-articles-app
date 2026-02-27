@@ -44,6 +44,7 @@ export class ArticleListPage {
         this.showForm.set(false);
         this.submitting.set(false);
         this.refresh$.next();
+        this.engagementSvc.refresh();
       },
       error: (err) => {
         this.serverErrors.set(err.error?.errors ?? null);
