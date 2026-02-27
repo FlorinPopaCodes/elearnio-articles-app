@@ -16,5 +16,5 @@ export const routes: Routes = [
         (m) => m.ArticleDetailPage,
       ),
   },
-{ path: '**', redirectTo: 'articles' },
+  { path: '**', redirectTo: 'articles' },
 ];

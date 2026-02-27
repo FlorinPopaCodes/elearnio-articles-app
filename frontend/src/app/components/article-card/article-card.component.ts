@@ -10,7 +10,7 @@ import type { Article } from '../../types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a [routerLink]="['/articles', article().id]"
-       class="block rounded-lg border border-gray-200 border-l-2 border-l-gray-200 bg-white p-4 transition hover:border-l-teal-500 hover:shadow-md">
+       class="block rounded-lg border border-gray-200 bg-white p-4 transition hover:border-l-2 hover:border-l-teal-500 hover:shadow-md focus-visible:border-l-2 focus-visible:border-l-teal-500 focus-visible:shadow-md focus-visible:outline-none">
       <div class="flex items-start justify-between gap-3">
         <h3 class="text-lg font-semibold text-gray-900">{{ article().title }}</h3>
         <span class="shrink-0 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-teal-700">
